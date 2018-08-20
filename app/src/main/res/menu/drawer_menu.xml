@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_home"
+            android:checked="true"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/action_org"
+            android:icon="@drawable/ic_organization"
+            android:title="Organizations" />
+        <item
+            android:id="@+id/action_pinned"
+            android:icon="@drawable/ic_bookmark"
+            android:title="Pinned" />
+        <item
+            android:id="@+id/action_trending"
+            android:icon="@drawable/ic_trending"
+            android:title="Trending" />
+        <item
+            android:id="@+id/action_gists"
+            android:icon="@drawable/ic_gist"
+            android:title="Gists" />
+    </group>
+
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_bug"
+            android:icon="@drawable/ic_bug"
+            android:title="Report Bug" />
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+    </group>
+
+</menu>
