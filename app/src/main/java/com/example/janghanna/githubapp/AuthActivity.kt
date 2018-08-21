@@ -68,7 +68,6 @@ class AuthActivity : AppCompatActivity() {
         call.enqueue({
             it.body()?.let {
                 toast(it.toString())
-                // Log.i(TAG, it.toString())
 
                 updateToken(this, it.accessToken)
 

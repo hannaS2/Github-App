@@ -1,21 +1,27 @@
 package com.example.janghanna.githubapp
 
 import android.graphics.Color
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
-import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.janghanna.githubapp.R.id.action_search
+import com.example.janghanna.githubapp.api.getToken
+import com.example.janghanna.githubapp.api.getUserInfo
+import com.example.janghanna.githubapp.api.provideGithubApi
+import com.example.janghanna.githubapp.home.GlideApp
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.drawer_header.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
 
@@ -66,12 +72,30 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+
+        setDrawerHeader()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val menuInflater = menuInflater
         menuInflater.inflate(R.menu.menu, menu)
 
+        customSearchIcon(menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_search -> {
+                toast("검색버튼 클릭")
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun customSearchIcon(menu: Menu?) {
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView: SearchView = searchItem?.actionView as SearchView
         val icon: ImageView = searchView.findViewById(android.support.v7.appcompat.R.id.search_button)
@@ -88,19 +112,31 @@ class MainActivity : AppCompatActivity() {
             toolbarIcon.visibility = View.VISIBLE
             false
         }
-
-        return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-            R.id.action_search -> {
-                toast("검색버튼 클릭")
-                return true
+    private fun setDrawerHeader() {
+        val eventCall = getToken(this)?.let { provideGithubApi(this).getUserInfo(it) }
+        eventCall?.enqueue({
+            it.body()?.let {
+                usernameTextView.text = it.name
+                userIdTextView.text = it.id
+                GlideApp.with(this)
+                        .load(it.image)
+                        .centerCrop()
+                        .into(userImageView)
             }
-        }
-
-        return super.onOptionsItemSelected(item)
+        }, {
+            Log.i("MainActivity", it.message.toString())
+        })
+//        val userInfo = getUserInfo(this)
+//        usernameTextView.text = userInfo?.name
+//        userIdTextView.text = userInfo?.id
+//        GlideApp.with(this)
+//                .load(userInfo?.image)
+//                .centerCrop()
+//                .into(userImageView)
+//        userImageView.background = ShapeDrawable(OvalShape())
+//        userImageView.clipToOutline = true
     }
 
 

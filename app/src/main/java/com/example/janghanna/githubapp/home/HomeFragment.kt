@@ -18,8 +18,10 @@ import android.view.ViewGroup
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import com.example.janghanna.githubapp.R
+import com.example.janghanna.githubapp.api.getToken
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.enqueue
+import com.example.janghanna.githubapp.home.model.HomeModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.item_home.view.*
 import org.joda.time.Days
@@ -37,6 +39,7 @@ class HomeFragment : Fragment() {
     }
 
     private var items = mutableListOf<HomeItem>()
+    private lateinit var model: HomeModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,22 +54,31 @@ class HomeFragment : Fragment() {
         itemView.homeRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
         itemView.homeRecyclerView.layoutManager = layoutManager
 
-        val eventCall = provideGithubApi(this.context!!).browseActivity("ahndwon")
-        eventCall.enqueue({
+        val userCall = getToken(this.context!!)?.let { provideGithubApi(this.context!!).getUserInfo(it) }
+        userCall?.enqueue({
             it.body()?.let {
-                //Log.i(TAG, it.toString())
 
-                it.forEach {
-                    val item = HomeItem(it.actor.login, it.type, it.repo.repoName, it.date, it.actor.image)
-                    items.add(item)
-                }
+                val eventCall = provideGithubApi(this.context!!).browseActivity(it.id)
+                eventCall.enqueue({
+                    it.body()?.let {
+                        //Log.i(TAG, it.toString())
 
-                Log.i(TAG, items.toString())
-                adapter.items = items
+                        it.forEach {
+                            val item = HomeItem(it.actor.login, it.type, it.repo.repoName, it.date, it.actor.image)
+                            items.add(item)
+                        }
+
+                        Log.i(TAG, items.toString())
+                        adapter.items = items
+
+                    }
+                }, {
+                    Log.i(HomeFragment.TAG, it.message.toString())
+                })
 
             }
         }, {
-            Log.i(HomeFragment.TAG, it.message.toString())
+            Log.i(TAG, it.message.toString())
         })
 
         return itemView
@@ -92,7 +104,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeViewHolder>() {
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val item = items[position]
         val itemType = generateContent(item.type, holder.itemView.context)
-        Log.i("HomeType", item.type)
+//        Log.i("HomeType", item.type)
 
         with(holder.itemView) {
             usernameText.text = item.user
@@ -103,10 +115,10 @@ class HomeAdapter : RecyclerView.Adapter<HomeViewHolder>() {
             GlideApp.with(this)
                     .load(item.image)
                     .centerCrop()
-                    .into(userImageView)
+                    .into(userImage)
 
-            userImageView.background = ShapeDrawable(OvalShape())
-            userImageView.clipToOutline = true
+//            userImage.background = ShapeDrawable(OvalShape())
+//            userImage.clipToOutline = true
 
         }
     }

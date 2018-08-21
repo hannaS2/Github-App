@@ -68,7 +68,7 @@ class MainHomeFragment : Fragment() {
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
-        val adapter: ViewPagerAdapter = fragmentManager?.let { ViewPagerAdapter(it) }!!
+        val adapter: ViewPagerAdapter = childFragmentManager.let { ViewPagerAdapter(it) }
         adapter.addFragment(HomeFragment(), "Home")
         adapter.addFragment(IssuesFragment(), "Issues")
         adapter.addFragment(PullRequestsFragment(), "Pull Requests")
