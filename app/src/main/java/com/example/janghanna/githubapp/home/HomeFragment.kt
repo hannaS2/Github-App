@@ -3,8 +3,6 @@ package com.example.janghanna.githubapp.home
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -19,9 +17,9 @@ import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.api.getToken
+import com.example.janghanna.githubapp.api.model.Event
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.enqueue
-import com.example.janghanna.githubapp.home.model.HomeModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.item_home.view.*
 import org.joda.time.Days
@@ -37,9 +35,6 @@ class HomeFragment : Fragment() {
     companion object {
         val TAG = HomeFragment::class.java.simpleName
     }
-
-    private var items = mutableListOf<HomeItem>()
-    private lateinit var model: HomeModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -63,14 +58,7 @@ class HomeFragment : Fragment() {
                     it.body()?.let {
                         //Log.i(TAG, it.toString())
 
-                        it.forEach {
-                            val item = HomeItem(it.actor.login, it.type, it.repo.repoName, it.date, it.actor.image)
-                            items.add(item)
-                        }
-
-                        Log.i(TAG, items.toString())
-                        adapter.items = items
-
+                        adapter.items = it
                     }
                 }, {
                     Log.i(HomeFragment.TAG, it.message.toString())
@@ -86,14 +74,14 @@ class HomeFragment : Fragment() {
 
 }
 
-data class HomeItem(val user: String, val type: String, val repo: String, val date: String, val image: String)
+//data class HomeItem(val user: String, val type: String, val repo: String, val date: String, val image: String)
 
 class HomeViewHolder(parent: ViewGroup)
     : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false))
 
 class HomeAdapter : RecyclerView.Adapter<HomeViewHolder>() {
-    var items: List<HomeItem> by Delegates.observable(emptyList()) { _, _, _ ->
+    var items: List<Event> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
 
@@ -104,19 +92,17 @@ class HomeAdapter : RecyclerView.Adapter<HomeViewHolder>() {
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val item = items[position]
         val itemType = generateContent(item.type, holder.itemView.context)
-//        Log.i("HomeType", item.type)
 
         with(holder.itemView) {
-            usernameText.text = item.user
-            contentText.text = "${itemType.first} ${item.repo}"
+            usernameText.text = item.actor.login
+            contentText.text = "${itemType.first} ${item.repo.repoName}"
             updateText.text = calcDate(item.date)
             typeImageView.setImageDrawable(itemType.second)
 
             GlideApp.with(this)
-                    .load(item.image)
+                    .load(item.actor.image)
                     .centerCrop()
                     .into(userImage)
-
 //            userImage.background = ShapeDrawable(OvalShape())
 //            userImage.clipToOutline = true
 
