@@ -9,4 +9,14 @@
     <string name="home_issues">Issues</string>
     <string name="home_pull_requests">Pull Requests</string>
     <string name="home_profile">Profile</string>
+    <string name="issues_pull_requests_created">Created</string>
+    <string name="issues_pull_requests_assigned">Assigned</string>
+    <string name="issues_pull_requests_mentioned">Mentioned</string>
+    <string name="profile_overview">Overview</string>
+    <string name="profile_repositories">Repositories</string>
+    <string name="profile_stars">Stars</string>
+    <string name="profile_followers">Followers</string>
+    <string name="profile_following">Following</string>
+    <string name="issue_open">Open</string>
+    <string name="issue_closed">Closed</string>
 </resources>

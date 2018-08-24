@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 
-class ViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
+class IconViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
 
     private val fragments = LinkedHashMap<Fragment, String>()
 
@@ -21,6 +21,6 @@ class ViewPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(f
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return fragments.values.elementAt(position) // 아이콘+글씨
+        return null
     }
 }

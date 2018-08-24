@@ -10,10 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.graphics.PorterDuff
 import android.support.v4.content.ContextCompat
-import com.example.janghanna.githubapp.home.HomeFragment
-import com.example.janghanna.githubapp.home.IssuesFragment
-import com.example.janghanna.githubapp.home.ProfileFragment
-import com.example.janghanna.githubapp.home.PullRequestsFragment
+import com.example.janghanna.githubapp.issues.IssuesFragment
 import kotlinx.android.synthetic.main.fragment_main_home.view.*
 
 
@@ -24,14 +21,14 @@ class MainHomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val itemView = inflater.inflate(R.layout.fragment_main_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_main_home, container, false)
 
-        setupViewPager(itemView.viewPager)
-        itemView.tabLayout.setupWithViewPager(itemView.viewPager)
-        setupTabIcons(itemView.tabLayout)
+        setupViewPager(view.homeViewPager)
+        view.homeTabLayout.setupWithViewPager(view.homeViewPager)
+        setupTabIcons(view.homeTabLayout)
 
-        itemView.viewPager.addOnPageChangeListener(object: TabLayout.TabLayoutOnPageChangeListener(itemView.tabLayout){})
-        itemView.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+        view.homeViewPager.addOnPageChangeListener(object: TabLayout.TabLayoutOnPageChangeListener(view.homeTabLayout){})
+        view.homeTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
 
@@ -41,7 +38,7 @@ class MainHomeFragment : Fragment() {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                itemView.viewPager.currentItem = tab?.position ?: 0
+                view.homeViewPager.currentItem = tab?.position ?: 0
 
                 val tabIconColor: Int = context?.let { ContextCompat.getColor(it, R.color.colorAccent) }!!
                 tab?.icon?.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN)
@@ -57,7 +54,7 @@ class MainHomeFragment : Fragment() {
             }
         })
 
-        return itemView
+        return view
     }
 
     private fun setupTabIcons(tabLayout: TabLayout) {
@@ -68,7 +65,7 @@ class MainHomeFragment : Fragment() {
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
-        val adapter: ViewPagerAdapter = childFragmentManager.let { ViewPagerAdapter(it) }
+        val adapter: IconViewPagerAdapter = childFragmentManager.let { IconViewPagerAdapter(it) }
         adapter.addFragment(HomeFragment(), "Home")
         adapter.addFragment(IssuesFragment(), "Issues")
         adapter.addFragment(PullRequestsFragment(), "Pull Requests")
