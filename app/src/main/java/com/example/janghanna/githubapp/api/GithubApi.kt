@@ -1,6 +1,7 @@
 package com.example.janghanna.githubapp.api
 
 import com.example.janghanna.githubapp.api.model.Event
+import com.example.janghanna.githubapp.api.model.Issue
 import com.example.janghanna.githubapp.api.model.RepoSearchResponse
 import com.example.janghanna.githubapp.api.model.User
 import com.google.gson.JsonObject
@@ -18,4 +19,9 @@ interface GithubApi {
 
     @GET("user")
     fun getUserInfo(@Query("access_token") query: String): Call<User>
+
+    @GET("/user/issues")
+    fun getIssues(@Query("filter") filter: String, @Query("state") state: String): Call<List<Issue>>
+
+
 }

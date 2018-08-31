@@ -98,31 +98,32 @@ class HomeAdapter : RecyclerView.Adapter<HomeViewHolder>() {
         }
     }
 
-    private fun calcDate(itemDate: String): String {
-        val now = LocalDateTime.now()
-        val formatter = DateTimeFormat.forPattern("MMM dd, yyyy")
-        val itemDateTime = LocalDateTime.parse(itemDate.substring(0, itemDate.length - 1))
-
-        val dayDiff = Days.daysBetween(itemDateTime, now).days
-        val hourDiff = Hours.hoursBetween(itemDateTime, now).hours
-        val minuteDiff = Minutes.minutesBetween(itemDateTime, now).minutes
-        return when {
-            hourDiff <= 0 -> "$minuteDiff minutes ago"
-            dayDiff == 0 -> "$hourDiff hours ago"
-            dayDiff <= 7 -> "$dayDiff days ago"
-            else -> itemDateTime.toString(formatter)
-        }
-    }
-
     private fun generateContent(itemType: String, context: Context): Pair<String, Drawable?> {
         return when(itemType) {
             "WatchEvent" -> Pair("starred", ContextCompat.getDrawable(context, R.drawable.ic_star))
-            "CreateEvent" -> Pair("created repository at", ContextCompat.getDrawable(context, R.drawable.ic_repo))
+            "CreateEvent" -> Pair("created a repository", ContextCompat.getDrawable(context, R.drawable.ic_repo))
             "MemberEvent" -> Pair("", ContextCompat.getDrawable(context, R.drawable.ic_organization))
+            "ForkEvent" -> Pair("forked from", ContextCompat.getDrawable(context, R.drawable.ic_repo_forked))
             else -> Pair("", null)
         }
     }
 
+}
+
+fun calcDate(itemDate: String): String {
+    val now = LocalDateTime.now()
+    val formatter = DateTimeFormat.forPattern("MMM dd, yyyy")
+    val itemDateTime = LocalDateTime.parse(itemDate.substring(0, itemDate.length - 1))
+
+    val dayDiff = Days.daysBetween(itemDateTime, now).days
+    val hourDiff = Hours.hoursBetween(itemDateTime, now).hours
+    val minuteDiff = Minutes.minutesBetween(itemDateTime, now).minutes
+    return when {
+        hourDiff <= 0 -> "$minuteDiff minutes ago"
+        dayDiff == 0 -> "$hourDiff hours ago"
+        dayDiff <= 7 -> "$dayDiff days ago"
+        else -> itemDateTime.toString(formatter)
+    }
 }
 
 

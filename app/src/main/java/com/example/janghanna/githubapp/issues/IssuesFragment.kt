@@ -26,9 +26,12 @@ class IssuesFragment : Fragment() {
 
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter: ViewPagerAdapter = childFragmentManager.let { ViewPagerAdapter(it) }
-        adapter.addFragment(IssuesTabFragment(), "Created")
-        adapter.addFragment(IssuesTabFragment(), "Assigned")
-        adapter.addFragment(IssuesTabFragment(), "Mentioned")
+//        adapter.addFragment(IssuesTabFragment(), "created")
+//        adapter.addFragment(IssuesTabFragment(), "assigned")
+//        adapter.addFragment(IssuesTabFragment(), "mentioned")
+        adapter.addFragment(CreatedFragment(), "created")
+        adapter.addFragment(AssignedFragment(), "assigned")
+        adapter.addFragment(MentionedFragment(), "mentioned")
         viewPager.adapter = adapter
     }
 

@@ -1,6 +1,7 @@
 package com.example.janghanna.githubapp.api
 
 import android.content.Context
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -34,6 +35,7 @@ class AuthInterceptor(private val context: Context) : Interceptor {
 
             getToken(context)?.let { token ->
                 addHeader("Authorization", "bearer $token")
+//                Log.i("Aaaa", token)
             }
 
         }.build()

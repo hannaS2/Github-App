@@ -36,6 +36,7 @@ class AuthActivity : AppCompatActivity() {
                     .appendPath("oauth")
                     .appendPath("authorize")
                     .appendQueryParameter("client_id", CLIENT_ID)
+                    .appendQueryParameter("scope", "repo") //
                     .build()
 
             val intent = CustomTabsIntent.Builder().build()

@@ -3,10 +3,10 @@ package com.example.janghanna.githubapp.api.model
 import com.google.gson.annotations.SerializedName
 
 data class Auth(
-        @field:SerializedName("access_token")
-        val accessToken: String,
-        @field:SerializedName("token_type")
-        val tokenType: String)
+@field:SerializedName("access_token")
+val accessToken: String,
+@field:SerializedName("token_type")
+val tokenType: String)
 
 data class GithubRepo(@field:SerializedName("full_name") val fullName: String)
 data class RepoSearchResponse(@field:SerializedName("total_count") val totalCount: Int,
@@ -20,3 +20,11 @@ data class Repo(@field:SerializedName("name") val repoName: String)
 data class User(@field:SerializedName("login") val id: String,
                 @field:SerializedName("avatar_url") val image: String,
                 @field:SerializedName("name") val name: String)
+
+data class Issue(@field:SerializedName("title") val title: String,
+                 val repository: Repository,
+                 val user: User,
+                 @field:SerializedName("updated_at") val date: String,
+                 val number: String,
+                 val state: String)
+data class Repository(@field:SerializedName("full_name") val fullName: String)
