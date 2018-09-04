@@ -1,4 +1,4 @@
-package com.example.janghanna.githubapp
+package com.example.janghanna.githubapp.profile
 
 
 import android.os.Bundle
@@ -9,15 +9,15 @@ import android.view.ViewGroup
 import com.example.janghanna.githubapp.R
 
 
-class ProfileFragment : Fragment() {
+class RepositoriesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val itemView = inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_repositories, container, false)
 
 
-        return itemView
+        return view
     }
 
 

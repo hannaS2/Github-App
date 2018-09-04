@@ -16,7 +16,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabSelectedTextColor="@color/colorAccent"
         android:elevation="5dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"

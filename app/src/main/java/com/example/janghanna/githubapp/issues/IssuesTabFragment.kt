@@ -17,7 +17,6 @@ import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.ui.enqueue
 import kotlinx.android.synthetic.main.fragment_issues_tab.view.*
 
-
 open class IssuesTabFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -30,11 +29,27 @@ open class IssuesTabFragment : Fragment() {
         return view
     }
 
-    fun setupViewPager(viewPager: ViewPager) {
+    fun setupViewPager(viewPager: ViewPager, type: String) {
         val adapter: ViewPagerAdapter = childFragmentManager.let { ViewPagerAdapter(it) }
-        adapter.addFragment(OpenCloseFragment(), "open")
-        adapter.addFragment(OpenCloseFragment(), "closed")
+
+        val openFragment = OpenCloseFragment()   // listener로 해보
+        val openArgs = setArguments(type, "open")
+        openFragment.arguments = openArgs
+
+        val closeFragment = OpenCloseFragment()
+        val closeArgs = setArguments(type, "close")
+        closeFragment.arguments = closeArgs
+
+        adapter.addFragment(openFragment, "open")
+        adapter.addFragment(closeFragment, "closed")
         viewPager.adapter = adapter
+    }
+
+    private fun setArguments(filter: String, state: String): Bundle {
+        val args = Bundle()
+        args.putString("filter", filter)
+        args.putString("state", state)
+        return args
     }
 
     fun setOpenCloseTabText(view: View, filter: String) {
@@ -47,7 +62,6 @@ open class IssuesTabFragment : Fragment() {
         openCall.enqueue({
             it.body()?.let {
                 view.issuesTabTabLayout.getTabAt(0)!!.text = "${it.size} Open"
-                Log.i("aaa", it.toString())
             }
         }, {
             Log.i(HomeFragment.TAG, it.message.toString())
@@ -55,7 +69,7 @@ open class IssuesTabFragment : Fragment() {
     }
 
     private fun getClosedIssue(view: View, filter: String) {
-        val closedCall = provideGithubApi(this.context!!).getIssues("created", "closed")
+        val closedCall = provideGithubApi(this.context!!).getIssues(filter, "closed")
         closedCall.enqueue({
             it.body()?.let {
                 view.issuesTabTabLayout.getTabAt(1)!!.text = "${it.size} Closed"
@@ -64,5 +78,6 @@ open class IssuesTabFragment : Fragment() {
             Log.i(HomeFragment.TAG, it.message.toString())
         })
     }
+
 
 }

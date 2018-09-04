@@ -22,6 +22,7 @@ import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.api.KEY_USER
 import com.example.janghanna.githubapp.api.getToken
 import com.example.janghanna.githubapp.api.provideGithubApi
+import com.example.janghanna.githubapp.api.updateUserId
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_header.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -127,17 +128,8 @@ class MainActivity : AppCompatActivity() {
                         .load(it.image)
                         .centerCrop()
                         .into(userImageView)
-            }
-        }, {
-            Log.i("MainActivity", it.message.toString())
-        })
 
-        val userCall = provideGithubApi(this).getUserInfo(getToken(this)!!)
-        userCall.enqueue({
-            it.body()?.let {
-                PreferenceManager.getDefaultSharedPreferences(this).edit()
-                        .putString(KEY_USER, it.id)
-                        .apply()
+                updateUserId(this, it.id)
             }
         }, {
             Log.i("MainActivity", it.message.toString())

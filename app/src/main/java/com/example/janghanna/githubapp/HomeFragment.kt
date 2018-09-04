@@ -119,7 +119,7 @@ fun calcDate(itemDate: String): String {
     val hourDiff = Hours.hoursBetween(itemDateTime, now).hours
     val minuteDiff = Minutes.minutesBetween(itemDateTime, now).minutes
     return when {
-        hourDiff <= 0 -> "$minuteDiff minutes ago"
+        dayDiff == 0 && hourDiff == 0 -> "$minuteDiff minutes ago"
         dayDiff == 0 -> "$hourDiff hours ago"
         dayDiff <= 7 -> "$dayDiff days ago"
         else -> itemDateTime.toString(formatter)

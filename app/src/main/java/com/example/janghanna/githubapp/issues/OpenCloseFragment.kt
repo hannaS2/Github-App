@@ -38,12 +38,10 @@ class OpenCloseFragment : Fragment() {
         view.issueRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
         view.issueRecyclerView.layoutManager = layoutManager
 
-        val issuesTabLayout: TabLayout = parentFragment!!.parentFragment!!.view!!.findViewById(R.id.issuesTabLayout)
-        val issuesTabTabLayout: TabLayout = parentFragment!!.view!!.findViewById(R.id.issuesTabTabLayout)
+        val filter = arguments?.get("filter").toString()
+        val state = arguments?.get("state").toString()
 
-        Log.i("aaaaa", issuesTabTabLayout.getTabAt(issuesTabTabLayout.selectedTabPosition)!!.text.toString())
-
-        val openCall = provideGithubApi(this.context!!).getIssues("created", "closed")
+        val openCall = provideGithubApi(this.context!!).getIssues(filter, state)
         openCall.enqueue({
             it.body()?.let {
                 adapter.items = it

@@ -20,6 +20,10 @@ class MentionedFragment : IssuesTabFragment() {
 
         val view = inflater.inflate(R.layout.fragment_issues_tab, container, false)
 
+        setupViewPager(view.issuesTabViewPager, "mentioned")
+        view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
+
+        setOpenCloseTabText(view, "mentioned")
 
         return view
     }
