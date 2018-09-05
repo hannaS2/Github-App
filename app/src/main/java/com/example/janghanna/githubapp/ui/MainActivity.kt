@@ -3,7 +3,6 @@ package com.example.janghanna.githubapp.ui
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -19,7 +18,6 @@ import com.example.janghanna.githubapp.GlideApp
 import com.example.janghanna.githubapp.MainHomeFragment
 import com.example.janghanna.githubapp.OrganizationsFragment
 import com.example.janghanna.githubapp.R
-import com.example.janghanna.githubapp.api.KEY_USER
 import com.example.janghanna.githubapp.api.getToken
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.api.updateUserId
@@ -119,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setDrawerHeader() {
-        val eventCall = getToken(this)?.let { provideGithubApi(this).getUserInfo(it) }
+        val eventCall = getToken(this)?.let { provideGithubApi(this).getMyUserInfo(it) }
         eventCall?.enqueue({
             it.body()?.let {
                 usernameTextView.text = it.name

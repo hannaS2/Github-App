@@ -15,13 +15,28 @@ interface GithubApi {
     fun browseActivity(@Path("user") user: String): Call<List<Event>>
 
     @GET("user")
-    fun getUserInfo(@Query("access_token") query: String): Call<User>
+    fun getMyUserInfo(@Query("access_token") query: String): Call<User>
 
     @GET("user/issues")
     fun getIssues(@Query("filter") filter: String, @Query("state") state: String): Call<List<Issue>>
 
     @GET("user/repos")
     fun getRepositories(): Call<List<Repository>>
+
+    @GET("users/{user}/repos")
+    fun getPinnedRepositories(@Path("user") user: String): Call<List<Repository>>
+
+    @GET("user/starred")
+    fun getStarredRepositories(): Call<List<Repository>>
+
+    @GET("user/followers")
+    fun getFollowers(): Call<List<User>>
+
+    @GET("user/following")
+    fun getFollowing(): Call<List<User>>
+
+    @GET("users")
+    fun getUserInfo(@Path("user") user: String): Call<User>
 
 
 }

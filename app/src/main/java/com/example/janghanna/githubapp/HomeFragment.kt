@@ -43,14 +43,14 @@ class HomeFragment : Fragment() {
         Log.i(TAG, "oncreate")
 
         val adapter = HomeAdapter()
-        val layoutManager = LinearLayoutManager(this.context)
+        val layoutManager = LinearLayoutManager(requireContext())
         view.homeRecyclerView.adapter = adapter
-        view.homeRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
+        view.homeRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         view.homeRecyclerView.layoutManager = layoutManager
 
 //        Log.i("HomeId", getUserId(this.context!!))
 
-        val eventCall = provideGithubApi(this.context!!).browseActivity(getUserId(this.context!!))
+        val eventCall = provideGithubApi(requireContext()).browseActivity(getUserId(this.context!!))
         eventCall.enqueue({
             it.body()?.let {
                 adapter.items = it

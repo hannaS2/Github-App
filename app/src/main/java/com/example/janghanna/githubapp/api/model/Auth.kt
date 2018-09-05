@@ -33,4 +33,5 @@ data class Repository(val name: String,
                       @field:SerializedName("forks") val fork: String,
                       @field:SerializedName("updated_at") val date: String,
                       val language: String,
+                      val description: String?,
                       @field:SerializedName("html_url") val url: String)

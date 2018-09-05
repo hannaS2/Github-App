@@ -1,6 +1,7 @@
 package com.example.janghanna.githubapp.profile
 
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -18,6 +19,8 @@ import com.example.janghanna.githubapp.calcDate
 import com.example.janghanna.githubapp.ui.enqueue
 import kotlinx.android.synthetic.main.fragment_repositories.view.*
 import kotlinx.android.synthetic.main.item_repository.view.*
+import org.json.JSONObject
+import java.io.IOException
 import kotlin.properties.Delegates
 
 
@@ -28,16 +31,15 @@ class RepositoriesFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_repositories, container, false)
 
-        val adapter = RepositoryAdapter()
+        val adapter = RepositoryAdapter("repo")
         val layoutManager = LinearLayoutManager(this.context)
         view.repositoryRecyclerView.adapter = adapter
         view.repositoryRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
         view.repositoryRecyclerView.layoutManager = layoutManager
 
-        val eventCall = provideGithubApi(this.context!!).getRepositories()
+        val eventCall = provideGithubApi(requireContext()).getRepositories()
         eventCall.enqueue({
             it.body()?.let {
-//                Log.i("aaaaa", it.toString())
                 adapter.items = it
             }
         }, {
@@ -55,7 +57,7 @@ class RepositoryViewHolder(parent: ViewGroup)
     : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_repository, parent, false))
 
-class RepositoryAdapter : RecyclerView.Adapter<RepositoryViewHolder>() {
+class RepositoryAdapter(val type: String) : RecyclerView.Adapter<RepositoryViewHolder>() {
     var items: List<Repository> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
@@ -68,39 +70,59 @@ class RepositoryAdapter : RecyclerView.Adapter<RepositoryViewHolder>() {
         val item = items[position]
 
         with(holder.itemView) {
-            repositoryText.text = item.name
+            repositoryText.text = if (type == "repo") item.name else item.fullName
             starText.text = item.star
             forkText.text = item.fork
             updateText.text = calcDate(item.date)
             languageText.text = item.language
 
-            val color = getLanguageColor(item.language)
-            Log.i("aaaa", color)
+            val color = getLanguageColor(context, item.language)
             languageImageView.setColorFilter(Color.parseColor(color))
 
         }
     }
+}
 
-    private fun getLanguageColor(language: String?): String {
-        if(language != null) {
-            return when (language) {
-                "Java" -> "#b07219"
-                "Kotlin" -> "#F18E33"
-                "C" -> "#555555"
-                "Python" -> "#3572A5"
-                "C++" -> "#f34b7d"
-                "Go" -> "#375eab"
-                "HTML" -> "#e34c26"
-                "JavaScript" -> "#f1e05a"
-                "Objective-C" -> "#438eff"
-                "TypeScript" -> "#2b7489"
-                "Vue" -> "#2c3e50"
-                "CSS" -> "#563d7c"
-                "R" -> "#198CE7"
-                else -> "#ffffff"
-            }
-        } else return "#ffffff"
-
+fun loadLanguageColorJson(context: Context): String? {
+    val json: String?
+    try {
+        val ins = context.assets.open("languageColor.json")
+        val size = ins.available()
+        val buffer = ByteArray(size)
+        ins.read(buffer)
+        ins.close()
+        json = String(buffer)
+    } catch (e: IOException) {
+        e.printStackTrace()
+        return null
     }
 
+    return json
 }
+
+fun getLanguageColor(context: Context, language: String?): String? {
+    val obj = JSONObject(loadLanguageColorJson(context))
+    return language?.let { obj.get(language).toString() } ?: "#ffffff"
+}
+
+//fun getLanguageColor(language: String?): String? {
+//
+//    return language?.let {
+//        when(it) {
+//            "Java" -> "#b07219"
+//            "Kotlin" -> "#F18E33"
+//            "C" -> "#555555"
+//            "Python" -> "#3572A5"
+//            "C++" -> "#f34b7d"
+//            "Go" -> "#375eab"
+//            "HTML" -> "#e34c26"
+//            "JavaScript" -> "#f1e05a"
+//            "Objective-C" -> "#438eff"
+//            "TypeScript" -> "#2b7489"
+//            "Vue" -> "#2c3e50"
+//            "CSS" -> "#563d7c"
+//            "R" -> "#198CE7"
+//            else -> "#ffffff"
+//        }
+//    } ?: "#ffffff"
+//}
