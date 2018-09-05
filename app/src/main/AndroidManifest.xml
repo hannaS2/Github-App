@@ -17,9 +17,9 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -31,8 +31,8 @@
                     android:scheme="githubapp" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.MainActivity" />
+        <activity android:name=".RepositoryActivity"></activity>
     </application>
 
 </manifest>

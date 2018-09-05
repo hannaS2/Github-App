@@ -16,16 +16,13 @@ import com.example.janghanna.githubapp.api.model.Issue
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.calcDate
 import com.example.janghanna.githubapp.ui.enqueue
+import kotlinx.android.synthetic.main.fragment_open_close.*
 import kotlinx.android.synthetic.main.fragment_open_close.view.*
 import kotlinx.android.synthetic.main.item_issue.view.*
 import kotlin.properties.Delegates
 
 
 class OpenCloseFragment : Fragment() {
-
-    companion object {
-        val TAG = OpenCloseFragment::class.java.simpleName
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,6 +41,10 @@ class OpenCloseFragment : Fragment() {
         val openCall = provideGithubApi(this.context!!).getIssues(filter, state)
         openCall.enqueue({
             it.body()?.let {
+                if(it.isEmpty()) {
+                    noResultText.visibility = View.VISIBLE
+                    noResultImage.visibility = View.VISIBLE
+                }
                 adapter.items = it
             }
         }, {

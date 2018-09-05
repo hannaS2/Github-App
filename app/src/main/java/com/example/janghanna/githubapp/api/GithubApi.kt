@@ -1,9 +1,6 @@
 package com.example.janghanna.githubapp.api
 
-import com.example.janghanna.githubapp.api.model.Event
-import com.example.janghanna.githubapp.api.model.Issue
-import com.example.janghanna.githubapp.api.model.RepoSearchResponse
-import com.example.janghanna.githubapp.api.model.User
+import com.example.janghanna.githubapp.api.model.*
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.GET
@@ -20,8 +17,11 @@ interface GithubApi {
     @GET("user")
     fun getUserInfo(@Query("access_token") query: String): Call<User>
 
-    @GET("/user/issues")
+    @GET("user/issues")
     fun getIssues(@Query("filter") filter: String, @Query("state") state: String): Call<List<Issue>>
+
+    @GET("user/repos")
+    fun getRepositories(): Call<List<Repository>>
 
 
 }

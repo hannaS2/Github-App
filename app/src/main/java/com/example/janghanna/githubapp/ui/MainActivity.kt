@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         val text: TextView = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)
         icon.setColorFilter(Color.WHITE)
         text.setTextColor(Color.WHITE)
-        searchView.queryHint = "검색어를 입력하세요"
+        searchView.queryHint = "Search..."
         text.setHintTextColor(Color.WHITE)
 
         searchView.setOnSearchClickListener {

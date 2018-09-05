@@ -27,4 +27,10 @@ data class Issue(@field:SerializedName("title") val title: String,
                  @field:SerializedName("updated_at") val date: String,
                  val number: String,
                  val state: String)
-data class Repository(@field:SerializedName("full_name") val fullName: String)
+data class Repository(val name: String,
+                      @field:SerializedName("full_name") val fullName: String,
+                      @field:SerializedName("stargazers_count") val star: String,
+                      @field:SerializedName("forks") val fork: String,
+                      @field:SerializedName("updated_at") val date: String,
+                      val language: String,
+                      @field:SerializedName("html_url") val url: String)
