@@ -12,6 +12,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class FilesFragment : Fragment() {
         Log.i("aaaaaa", path)
         view.filePathText.text = path
 
-        val adapter = FileAdapter(childFragmentManager)
+        val adapter = FileAdapter(fragmentManager)
         val layoutManager = LinearLayoutManager(requireContext())
         view.fileRecyclerView.adapter = adapter
         view.fileRecyclerView.layoutManager = layoutManager
@@ -48,11 +49,22 @@ class FilesFragment : Fragment() {
         val eventCall = provideGithubApi(requireContext()).getSourceFile(repo.owner.id, repo.name, path)
         eventCall.enqueue({
             it.body()?.let {
-//                Log.i("aaaaaa", it.toString())
+                //                Log.i("aaaaaa", it.toString())
                 adapter.items = it
             }
         }, {
             Log.i("FilesFragment", it.message.toString())
+        })
+
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        view.setOnKeyListener(View.OnKeyListener { _, p1, p2 ->
+            if (p1 == KeyEvent.KEYCODE_BACK && p2?.action == KeyEvent.ACTION_DOWN) {
+//                Log.i("aaaaa", "click")
+                fragmentManager?.popBackStack()
+                return@OnKeyListener true
+            }
+            false
         })
 
         return view
@@ -65,7 +77,7 @@ class FileViewHolder(parent: ViewGroup)
     : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_file, parent, false))
 
-class FileAdapter(private val fragmentManager: FragmentManager) : RecyclerView.Adapter<FileViewHolder>() {
+class FileAdapter(private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<FileViewHolder>() {
     var items: List<File> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
@@ -93,17 +105,17 @@ class FileAdapter(private val fragmentManager: FragmentManager) : RecyclerView.A
                     fragment = FilesFragment()
                 }
                 fragment.arguments = args
-                val transaction = fragmentManager.beginTransaction()
-                transaction.replace(R.id.file_layout, fragment)
-                transaction.addToBackStack(null)
-                transaction.commit()
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.file_layout, fragment)
+                transaction?.addToBackStack(null)
+                transaction?.commit()
             }
         }
 
     }
 
     private fun generateFileIcon(context: Context, type: String): Drawable? {
-        return when(type) {
+        return when (type) {
             "file" -> ContextCompat.getDrawable(context, R.drawable.ic_file)
             "dir" -> ContextCompat.getDrawable(context, R.drawable.ic_file_directory)
             else -> ContextCompat.getDrawable(context, R.drawable.ic_file)

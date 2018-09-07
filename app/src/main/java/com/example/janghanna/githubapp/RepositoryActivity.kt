@@ -77,8 +77,5 @@ class RepositoryActivity : AppCompatActivity() {
         viewPager.adapter = adapter
     }
 
-
-
-
 }
 
