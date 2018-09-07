@@ -13,14 +13,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.janghanna.githubapp.R
+import com.example.janghanna.githubapp.RepositoryActivity
 import com.example.janghanna.githubapp.api.model.Repository
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.calcDate
 import com.example.janghanna.githubapp.ui.enqueue
 import kotlinx.android.synthetic.main.fragment_repositories.view.*
 import kotlinx.android.synthetic.main.item_repository.view.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.io.IOException
+import java.io.Serializable
 import kotlin.properties.Delegates
 
 
@@ -78,6 +81,10 @@ class RepositoryAdapter(val type: String) : RecyclerView.Adapter<RepositoryViewH
 
             val color = getLanguageColor(context, item.language)
             languageImageView.setColorFilter(Color.parseColor(color))
+
+            repositoryText.setOnClickListener {
+                context.startActivity<RepositoryActivity>("repository" to item)
+            }
 
         }
     }

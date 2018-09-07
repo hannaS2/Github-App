@@ -42,8 +42,8 @@ class OpenCloseFragment : Fragment() {
         openCall.enqueue({
             it.body()?.let {
                 if(it.isEmpty()) {
-                    noResultText.visibility = View.VISIBLE
-                    noResultImage.visibility = View.VISIBLE
+                    view.noResultText.visibility = View.VISIBLE
+                    view.noResultImage.visibility = View.VISIBLE
                 }
                 adapter.items = it
             }

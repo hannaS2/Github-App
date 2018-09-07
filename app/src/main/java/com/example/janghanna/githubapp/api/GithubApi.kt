@@ -35,6 +35,12 @@ interface GithubApi {
     @GET("user/following")
     fun getFollowing(): Call<List<User>>
 
+    @GET("repos/{user}/{repo}/readme")
+    fun getReadMe(@Path("user") user: String, @Path("repo") repo: String): Call<ReadMe?>
+
+    @GET("repos/{user}/{repo}/contents/{path}")
+    fun getSourceFile(@Path("user") user: String, @Path("repo") repo: String, @Path("path") path: String): Call<List<File>>
+
     @GET("users")
     fun getUserInfo(@Path("user") user: String): Call<User>
 

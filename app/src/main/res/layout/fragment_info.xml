@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".repository.InfoFragment">
+
+
+        <TextView
+            android:id="@+id/repoUserText"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="user"
+            android:textColor="@color/blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/splitText"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="/"
+            app:layout_constraintBottom_toBottomOf="@+id/repoUserText"
+            app:layout_constraintStart_toEndOf="@+id/repoUserText"
+            app:layout_constraintTop_toTopOf="@+id/repoUserText" />
+
+        <TextView
+            android:id="@+id/repoNameText"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="repoName"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/splitText"
+            app:layout_constraintStart_toEndOf="@+id/splitText"
+            app:layout_constraintTop_toTopOf="@+id/splitText" />
+
+        <TextView
+            android:id="@+id/repoCreatedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Created at Date"
+            app:layout_constraintStart_toStartOf="@+id/repoUserText"
+            app:layout_constraintTop_toBottomOf="@+id/repoUserText" />
+
+        <TextView
+            android:id="@+id/repoLatestDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Latest Commit Date"
+            app:layout_constraintStart_toStartOf="@+id/repoCreatedDate"
+            app:layout_constraintTop_toBottomOf="@+id/repoCreatedDate" />
+
+        <ImageView
+            android:id="@+id/repoWatchImage"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_eye"
+            app:layout_constraintStart_toStartOf="@+id/repoLatestDateText"
+            app:layout_constraintTop_toBottomOf="@+id/repoLatestDateText" />
+
+        <TextView
+            android:id="@+id/repoWatchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="1"
+            app:layout_constraintBottom_toBottomOf="@+id/repoWatchImage"
+            app:layout_constraintStart_toEndOf="@+id/repoWatchImage"
+            app:layout_constraintTop_toTopOf="@+id/repoWatchImage" />
+
+        <ImageView
+            android:id="@+id/repoStarImage"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/ic_star"
+            app:layout_constraintBottom_toBottomOf="@+id/repoWatchText"
+            app:layout_constraintStart_toEndOf="@+id/repoWatchText"
+            app:layout_constraintTop_toTopOf="@+id/repoWatchText" />
+
+        <TextView
+            android:id="@+id/repoStarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/repoStarImage"
+            app:layout_constraintStart_toEndOf="@+id/repoStarImage"
+            app:layout_constraintTop_toTopOf="@+id/repoStarImage" />
+
+        <ImageView
+            android:id="@+id/repoForkImage"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/ic_repo_forked"
+            app:layout_constraintBottom_toBottomOf="@+id/repoStarText"
+            app:layout_constraintStart_toEndOf="@+id/repoStarText"
+            app:layout_constraintTop_toTopOf="@+id/repoStarText" />
+
+        <TextView
+            android:id="@+id/repoForkText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/repoForkImage"
+            app:layout_constraintStart_toEndOf="@+id/repoForkImage"
+            app:layout_constraintTop_toTopOf="@+id/repoForkImage" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/light_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repoWatchImage" />
+
+        <ImageView
+            android:id="@+id/repoLanguageImage"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/circle"
+            app:layout_constraintBottom_toBottomOf="@+id/repoForkText"
+            app:layout_constraintEnd_toStartOf="@+id/repoLanguageText"
+            app:layout_constraintTop_toTopOf="@+id/repoForkText" />
+
+        <TextView
+            android:id="@+id/repoLanguageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Kotlin"
+            app:layout_constraintBottom_toBottomOf="@+id/repoLanguageImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/repoLanguageImage" />
+
+        <us.feras.mdv.MarkdownView
+            android:id="@+id/readMeMarkdownView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/readMeText"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/readMeText"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="README.md"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+        <ImageView
+            android:id="@+id/noReadMeImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_issue_opened"
+            android:tint="@color/gray"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3"
+            app:layout_constraintVertical_bias="0.45" />
+
+        <TextView
+            android:id="@+id/noReadMeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Add a README file."
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noReadMeImage" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
+

@@ -1,6 +1,7 @@
 package com.example.janghanna.githubapp.api.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Auth(
 @field:SerializedName("access_token")
@@ -27,11 +28,25 @@ data class Issue(@field:SerializedName("title") val title: String,
                  @field:SerializedName("updated_at") val date: String,
                  val number: String,
                  val state: String)
+
 data class Repository(val name: String,
+                      val owner: Owner,
                       @field:SerializedName("full_name") val fullName: String,
                       @field:SerializedName("stargazers_count") val star: String,
-                      @field:SerializedName("forks") val fork: String,
+                      @field:SerializedName("forks_count") val fork: String,
+                      @field:SerializedName("watchers_count") val watcher: String,
                       @field:SerializedName("updated_at") val date: String,
+                      @field:SerializedName("created_at") val createdDate: String,
+                      @field:SerializedName("pushed_at") val lastPushDate: String,
                       val language: String,
                       val description: String?,
-                      @field:SerializedName("html_url") val url: String)
+                      @field:SerializedName("html_url") val url: String) : Serializable
+data class Owner(@field:SerializedName("login") val id: String): Serializable
+
+data class ReadMe(val name: String,
+                  @field:SerializedName("download_url") val url: String)
+
+data class File(val name: String,
+                  val path: String,
+                  val type: String,
+                  @field:SerializedName("download_url") val url: String)

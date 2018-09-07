@@ -53,8 +53,6 @@ class OverviewFragment : Fragment() {
         val eventCall = provideGithubApi(requireContext()).getPinnedRepositories(getUserId(requireContext()))
         eventCall.enqueue({
             it.body()?.let {
-                Log.i("aaaaa", it.toString()
-                )
                 adapter.items = it
             }
         }, {
