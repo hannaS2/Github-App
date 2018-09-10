@@ -2,7 +2,6 @@ package com.example.janghanna.githubapp.issues
 
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.util.Log
@@ -11,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.janghanna.githubapp.HomeFragment
 import com.example.janghanna.githubapp.R
-import com.example.janghanna.githubapp.ViewPagerAdapter
-import com.example.janghanna.githubapp.api.model.Issue
+import com.example.janghanna.githubapp.api.model.Repository
+import com.example.janghanna.githubapp.util.ViewPagerAdapter
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.ui.enqueue
 import kotlinx.android.synthetic.main.fragment_issues_tab.view.*
@@ -23,21 +22,21 @@ open class IssuesTabFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_issues_tab, container, false)
 
-//        setupViewPager(view.issuesTabViewPager)
+//        setupViewPager(view.issuesTabViewPager, "")
 //        view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
 
         return view
     }
 
-    fun setupViewPager(viewPager: ViewPager, type: String) {
+    fun setupViewPager(viewPager: ViewPager, type: String, repo: Repository?) {
         val adapter: ViewPagerAdapter = childFragmentManager.let { ViewPagerAdapter(it) }
 
         val openFragment = OpenCloseFragment()   // listener로 해보
-        val openArgs = setArguments(type, "open")
+        val openArgs = setArguments(type, "open", repo)
         openFragment.arguments = openArgs
 
         val closeFragment = OpenCloseFragment()
-        val closeArgs = setArguments(type, "close")
+        val closeArgs = setArguments(type, "closed", repo)
         closeFragment.arguments = closeArgs
 
         adapter.addFragment(openFragment, "open")
@@ -45,22 +44,26 @@ open class IssuesTabFragment : Fragment() {
         viewPager.adapter = adapter
     }
 
-    private fun setArguments(filter: String, state: String): Bundle {
+    private fun setArguments(filter: String, state: String, repo: Repository?): Bundle {
         val args = Bundle()
         args.putString("filter", filter)
         args.putString("state", state)
+        args.putSerializable("repo", repo)
         return args
     }
 
-    fun setOpenCloseTabText(view: View, filter: String) {
-        getOpenIssue(view, filter)
-        getClosedIssue(view, filter)
+    fun setOpenCloseTabText(view: View, filter: String?, repo: Repository?) {
+        getOpenIssue(view, filter, repo)
+        getClosedIssue(view, filter, repo)
     }
 
-    private fun getOpenIssue(view: View, filter: String) {
-        val openCall = provideGithubApi(this.context!!).getIssues(filter, "open")
+    private fun getOpenIssue(view: View, filter: String?, repo: Repository?) {
+//        val openCall = provideGithubApi(this.context!!).getIssues(filter, "open")
+        val openCall = repo?.let { provideGithubApi(requireContext()).getRepoIssues(repo.owner.id, repo.name, "open") }
+                ?: run { provideGithubApi(this.context!!).getIssues(filter, "open") }
         openCall.enqueue({
             it.body()?.let {
+                Log.i("aaaa", it.size.toString())
                 view.issuesTabTabLayout.getTabAt(0)!!.text = "${it.size} Open"
             }
         }, {
@@ -68,8 +71,9 @@ open class IssuesTabFragment : Fragment() {
         })
     }
 
-    private fun getClosedIssue(view: View, filter: String) {
-        val closedCall = provideGithubApi(this.context!!).getIssues(filter, "closed")
+    private fun getClosedIssue(view: View, filter: String?, repo: Repository?) {
+        val closedCall = repo?.let { provideGithubApi(requireContext()).getRepoIssues(repo.owner.id, repo.name, "closed") }
+                ?: run { provideGithubApi(this.context!!).getIssues(filter, "closed") }
         closedCall.enqueue({
             it.body()?.let {
                 view.issuesTabTabLayout.getTabAt(1)!!.text = "${it.size} Closed"

@@ -6,9 +6,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -16,16 +14,14 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.janghanna.githubapp.R
-import com.example.janghanna.githubapp.RepositoryActivity
-import com.example.janghanna.githubapp.api.getUserId
 import com.example.janghanna.githubapp.api.model.File
 import com.example.janghanna.githubapp.api.model.Repository
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.ui.enqueue
 import kotlinx.android.synthetic.main.fragment_files.view.*
 import kotlinx.android.synthetic.main.item_file.view.*
+import org.jetbrains.anko.startActivity
 import kotlin.properties.Delegates
 
 
@@ -41,6 +37,8 @@ class FilesFragment : Fragment() {
         Log.i("aaaaaa", path)
         view.filePathText.text = path
 
+        view.fileProgressBar.visibility = View.VISIBLE
+
         val adapter = FileAdapter(fragmentManager)
         val layoutManager = LinearLayoutManager(requireContext())
         view.fileRecyclerView.adapter = adapter
@@ -49,8 +47,8 @@ class FilesFragment : Fragment() {
         val eventCall = provideGithubApi(requireContext()).getSourceFile(repo.owner.id, repo.name, path)
         eventCall.enqueue({
             it.body()?.let {
-                //                Log.i("aaaaaa", it.toString())
                 adapter.items = it
+                view.fileProgressBar.visibility = View.INVISIBLE
             }
         }, {
             Log.i("FilesFragment", it.message.toString())
@@ -94,21 +92,20 @@ class FileAdapter(private val fragmentManager: FragmentManager?) : RecyclerView.
             fileImage.setImageDrawable(generateFileIcon(holder.itemView.context, item.type))
 
             fileNameText.setOnClickListener {
-                lateinit var fragment: Fragment
-                val args = Bundle()
-                args.putSerializable("repo", RepositoryActivity.repo)
                 if (item.type == "file") {
-                    args.putString("url", item.url)
-                    fragment = FileFragment()
+                    context.startActivity<FileActivity>("url" to item.url, "path" to item.path)
                 } else {
+                    val fragment = FilesFragment()
+                    val args = Bundle()
                     args.putString("path", item.path)
-                    fragment = FilesFragment()
+                    args.putSerializable("repo", RepositoryActivity.repo)
+                    fragment.arguments = args
+
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.file_layout, fragment)
+                    transaction?.addToBackStack(null)
+                    transaction?.commit()
                 }
-                fragment.arguments = args
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.file_layout, fragment)
-                transaction?.addToBackStack(null)
-                transaction?.commit()
             }
         }
 

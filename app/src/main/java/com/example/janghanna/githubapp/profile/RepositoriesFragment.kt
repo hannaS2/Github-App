@@ -13,7 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.janghanna.githubapp.R
-import com.example.janghanna.githubapp.RepositoryActivity
+import com.example.janghanna.githubapp.repository.RepositoryActivity
 import com.example.janghanna.githubapp.api.model.Repository
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.calcDate
@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.item_repository.view.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.io.IOException
-import java.io.Serializable
 import kotlin.properties.Delegates
 
 
@@ -33,6 +32,8 @@ class RepositoriesFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_repositories, container, false)
+
+        view.repositoryProgressBar.visibility = View.VISIBLE
 
         val adapter = RepositoryAdapter("repo")
         val layoutManager = LinearLayoutManager(this.context)
@@ -44,6 +45,7 @@ class RepositoriesFragment : Fragment() {
         eventCall.enqueue({
             it.body()?.let {
                 adapter.items = it
+                view.repositoryProgressBar.visibility = View.INVISIBLE
             }
         }, {
             Log.i("RepositoriesFragment", it.message.toString())

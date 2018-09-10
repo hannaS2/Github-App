@@ -1,4 +1,4 @@
-package com.example.janghanna.githubapp
+package com.example.janghanna.githubapp.util
 
 import android.app.Application
 import android.util.Log

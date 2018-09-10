@@ -24,6 +24,7 @@
         android:id="@+id/languageImage"
         android:layout_width="15dp"
         android:layout_height="15dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/languageText"
         app:layout_constraintEnd_toStartOf="@+id/languageText"
@@ -33,7 +34,7 @@
 
     <TextView
         android:id="@+id/languageText"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="Java"

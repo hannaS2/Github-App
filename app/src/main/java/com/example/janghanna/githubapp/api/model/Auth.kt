@@ -20,10 +20,10 @@ data class Repo(@field:SerializedName("name") val repoName: String)
 
 data class User(@field:SerializedName("login") val id: String,
                 @field:SerializedName("avatar_url") val image: String,
-                @field:SerializedName("name") val name: String)
+                @field:SerializedName("name") val name: String?)
 
 data class Issue(@field:SerializedName("title") val title: String,
-                 val repository: Repository,
+                 val repository: Repository?,
                  val user: User,
                  @field:SerializedName("updated_at") val date: String,
                  val number: String,
@@ -31,7 +31,7 @@ data class Issue(@field:SerializedName("title") val title: String,
 
 data class Repository(val name: String,
                       val owner: Owner,
-                      @field:SerializedName("full_name") val fullName: String,
+                      @field:SerializedName("full_name") val fullName: String?,
                       @field:SerializedName("stargazers_count") val star: String,
                       @field:SerializedName("forks_count") val fork: String,
                       @field:SerializedName("watchers_count") val watcher: String,
@@ -50,3 +50,16 @@ data class File(val name: String,
                   val path: String,
                   val type: String,
                   @field:SerializedName("download_url") val url: String)
+
+data class Commit(val author: User,
+                  @field:SerializedName("commit") val content: CommitContent)
+data class CommitContent(val message: String, val author: Committer)
+data class Committer(val date: String)
+
+data class Contributor(@field:SerializedName("author") val user: User,
+                       @field:SerializedName("total") val count: Int,
+                       @field:SerializedName("weeks") val stats: List<WeekStats>)
+data class WeekStats(@field:SerializedName("w") val startWeek: String,
+                     @field:SerializedName("a") val addition: Int,
+                     @field:SerializedName("d") val deletion: Int,
+                     @field:SerializedName("c") val commitCount: Int)

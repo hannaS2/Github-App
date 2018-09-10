@@ -1,7 +1,6 @@
 package com.example.janghanna.githubapp.issues
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -10,13 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.janghanna.githubapp.HomeFragment
 import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.api.model.Issue
+import com.example.janghanna.githubapp.api.model.Repository
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.calcDate
 import com.example.janghanna.githubapp.ui.enqueue
-import kotlinx.android.synthetic.main.fragment_open_close.*
 import kotlinx.android.synthetic.main.fragment_open_close.view.*
 import kotlinx.android.synthetic.main.item_issue.view.*
 import kotlin.properties.Delegates
@@ -29,6 +27,8 @@ class OpenCloseFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_open_close, container, false)
 
+        val repo = arguments?.getSerializable("repo") as Repository?
+
         val adapter = IssueAdapter()
         val layoutManager = LinearLayoutManager(this.context)
         view.issueRecyclerView.adapter = adapter
@@ -38,17 +38,20 @@ class OpenCloseFragment : Fragment() {
         val filter = arguments?.get("filter").toString()
         val state = arguments?.get("state").toString()
 
-        val openCall = provideGithubApi(this.context!!).getIssues(filter, state)
+        // home의 issue에서는 run실행(repo가 null인 경우),
+        // repository의 issue에서는 전달받은 repo의 issue(repo가 null이 아닌 경우)
+        val openCall = repo?.let { provideGithubApi(this.context!!).getRepoIssues(repo.owner.id, repo.name, state) }
+                ?: run { provideGithubApi(this.context!!).getIssues(filter, state) }
         openCall.enqueue({
             it.body()?.let {
-                if(it.isEmpty()) {
+                if (it.isEmpty()) {
                     view.noResultText.visibility = View.VISIBLE
                     view.noResultImage.visibility = View.VISIBLE
                 }
                 adapter.items = it
             }
         }, {
-            Log.i(HomeFragment.TAG, it.message.toString())
+            Log.i("OpenCloseFragment", it.message.toString())
         })
 
         return view
@@ -75,18 +78,23 @@ class IssueAdapter : RecyclerView.Adapter<IssueViewHolder>() {
         val item = items[position]
 
         with(holder.itemView) {
-            issueRepoText.text = item.repository.fullName
+            issueRepoText.text = item.repository?.let { item.repository.fullName } ?: run {
+                issueRepoText.visibility = View.INVISIBLE
+                ""
+            }
             issueTitleText.text = item.title
             issueInfoText.text = generateIssueInfo(item)
         }
     }
 
     private fun generateIssueInfo(item: Issue): String {
-        return when(item.state) {
+        return when (item.state) {
             "open" -> "#${item.number} opened ${calcDate(item.date)} by ${item.user.id}"
             "closed" -> "#${item.number} by ${item.user.id} was closed ${calcDate(item.date)}"
             else -> ""
         }
     }
-
 }
+
+
+

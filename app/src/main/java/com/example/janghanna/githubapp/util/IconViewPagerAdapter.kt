@@ -1,4 +1,4 @@
-package com.example.janghanna.githubapp
+package com.example.janghanna.githubapp.util
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

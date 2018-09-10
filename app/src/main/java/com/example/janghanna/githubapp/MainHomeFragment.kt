@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat
 import com.example.janghanna.githubapp.issues.IssuesFragment
 import com.example.janghanna.githubapp.profile.ProfileFragment
 import com.example.janghanna.githubapp.issues.PullRequestsFragment
+import com.example.janghanna.githubapp.util.IconViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_main_home.view.*
 
 

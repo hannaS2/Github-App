@@ -1,7 +1,6 @@
 package com.example.janghanna.githubapp.api
 
 import com.example.janghanna.githubapp.api.model.*
-import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,7 +17,10 @@ interface GithubApi {
     fun getMyUserInfo(@Query("access_token") query: String): Call<User>
 
     @GET("user/issues")
-    fun getIssues(@Query("filter") filter: String, @Query("state") state: String): Call<List<Issue>>
+    fun getIssues(@Query("filter") filter: String?, @Query("state") state: String): Call<List<Issue>>
+
+    @GET("repos/{user}/{repo}/issues")
+    fun getRepoIssues(@Path("user") user: String, @Path("repo") repo: String, @Query("state") state: String): Call<List<Issue>>
 
     @GET("user/repos")
     fun getRepositories(): Call<List<Repository>>
@@ -41,8 +43,13 @@ interface GithubApi {
     @GET("repos/{user}/{repo}/contents/{path}")
     fun getSourceFile(@Path("user") user: String, @Path("repo") repo: String, @Path("path") path: String): Call<List<File>>
 
-    @GET("users")
+    @GET("users/{user}")
     fun getUserInfo(@Path("user") user: String): Call<User>
 
+    @GET("repos/{user}/{repo}/commits")
+    fun getRepoCommits(@Path("user") user: String, @Path("repo") repo: String): Call<List<Commit>>
+
+    @GET("repos/{user}/{repo}/stats/contributors")
+    fun getRepoContributors(@Path("user") user: String, @Path("repo") repo: String): Call<List<Contributor>>
 
 }

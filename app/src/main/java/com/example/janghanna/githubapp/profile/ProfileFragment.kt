@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.janghanna.githubapp.R
-import com.example.janghanna.githubapp.ViewPagerAdapter
+import com.example.janghanna.githubapp.util.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 
