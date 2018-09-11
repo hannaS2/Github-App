@@ -33,7 +33,7 @@ class RepositoriesFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_repositories, container, false)
 
-        view.repositoryProgressBar.visibility = View.VISIBLE
+        val user = arguments?.getString("user")
 
         val adapter = RepositoryAdapter("repo")
         val layoutManager = LinearLayoutManager(this.context)
@@ -41,11 +41,13 @@ class RepositoriesFragment : Fragment() {
         view.repositoryRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
         view.repositoryRecyclerView.layoutManager = layoutManager
 
-        val eventCall = provideGithubApi(requireContext()).getRepositories()
+        val eventCall = user?.let { provideGithubApi(requireContext()).getUserRepositories(user) }
+                ?: run { provideGithubApi(requireContext()).getRepositories() }
+//        val eventCall = provideGithubApi(requireContext()).getRepositories()
         eventCall.enqueue({
             it.body()?.let {
                 adapter.items = it
-                view.repositoryProgressBar.visibility = View.INVISIBLE
+                view.repositoryProgressBar.visibility = View.GONE
             }
         }, {
             Log.i("RepositoriesFragment", it.message.toString())

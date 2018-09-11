@@ -37,8 +37,6 @@ class FilesFragment : Fragment() {
         Log.i("aaaaaa", path)
         view.filePathText.text = path
 
-        view.fileProgressBar.visibility = View.VISIBLE
-
         val adapter = FileAdapter(fragmentManager)
         val layoutManager = LinearLayoutManager(requireContext())
         view.fileRecyclerView.adapter = adapter
@@ -48,7 +46,7 @@ class FilesFragment : Fragment() {
         eventCall.enqueue({
             it.body()?.let {
                 adapter.items = it
-                view.fileProgressBar.visibility = View.INVISIBLE
+                view.fileProgressBar.visibility = View.GONE
             }
         }, {
             Log.i("FilesFragment", it.message.toString())

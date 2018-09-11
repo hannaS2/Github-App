@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".profile.FollowingFragment">
+    tools:context=".profile.FollowingFragment"
+    android:id="@+id/follow_layout">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/followingRecyclerView"
+        android:id="@+id/followRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

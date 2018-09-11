@@ -20,7 +20,10 @@ data class Repo(@field:SerializedName("name") val repoName: String)
 
 data class User(@field:SerializedName("login") val id: String,
                 @field:SerializedName("avatar_url") val image: String,
-                @field:SerializedName("name") val name: String?)
+                @field:SerializedName("name") val name: String?,
+                val email: String?,
+                val followers: Int?,
+                val following: Int?)
 
 data class Issue(@field:SerializedName("title") val title: String,
                  val repository: Repository?,

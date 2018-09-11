@@ -33,7 +33,8 @@
         </activity>
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".repository.RepositoryActivity" />
-        <activity android:name=".repository.FileActivity"/>
+        <activity android:name=".repository.FileActivity" />
+        <activity android:name=".profile.UserActivity"></activity>
     </application>
 
 </manifest>

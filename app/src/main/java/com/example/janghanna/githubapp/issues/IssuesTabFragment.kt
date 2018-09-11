@@ -63,7 +63,6 @@ open class IssuesTabFragment : Fragment() {
                 ?: run { provideGithubApi(this.context!!).getIssues(filter, "open") }
         openCall.enqueue({
             it.body()?.let {
-                Log.i("aaaa", it.size.toString())
                 view.issuesTabTabLayout.getTabAt(0)!!.text = "${it.size} Open"
             }
         }, {

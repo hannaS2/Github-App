@@ -54,6 +54,7 @@ class HomeFragment : Fragment() {
         eventCall.enqueue({
             it.body()?.let {
                 adapter.items = it
+                view.homeProgressBar.visibility = View.GONE
             }
         }, {
             Log.i(TAG, it.message.toString())

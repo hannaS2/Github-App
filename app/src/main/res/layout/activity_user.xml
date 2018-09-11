@@ -1,59 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".profile.ProfileFragment">
+    tools:context=".profile.UserActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/userToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/profileTabLayout"
+        android:id="@+id/userTabLayout"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:elevation="2dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userToolbar"
         app:layout_constraintVertical_bias="0.0"
+        app:tabSelectedTextColor="@color/colorAccent"
         app:tabMode="scrollable"
-        android:elevation="2dp"
-        android:background="@color/white"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_overview" />
+            android:text="Overview" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_repositories" />
+            android:text="Repositories" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_stars" />
+            android:text="Stars" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_followers" />
+            android:text="Followers" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_following" />
+            android:text="Following" />
 
     </android.support.design.widget.TabLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/profileViewPager"
+        android:id="@+id/userViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileTabLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/userTabLayout" />
 
 </android.support.constraint.ConstraintLayout>

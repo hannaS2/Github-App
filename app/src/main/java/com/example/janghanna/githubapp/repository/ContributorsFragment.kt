@@ -29,8 +29,6 @@ class ContributorsFragment : Fragment() {
 
         val repo = arguments?.getSerializable("repo") as Repository
 
-        view.contributorProgressBar.visibility = View.VISIBLE
-
         val adapter = ContributorAdapter()
         val layoutManager = LinearLayoutManager(requireContext())
         view.contributorRecyclerView.adapter = adapter
@@ -41,7 +39,7 @@ class ContributorsFragment : Fragment() {
         eventCall.enqueue({
             it.body()?.let {
                 adapter.items = it
-                view.contributorProgressBar.visibility = View.INVISIBLE
+                view.contributorProgressBar.visibility = View.GONE
             }
         }, {
             Log.i("ContributorsFragment", it.message.toString())

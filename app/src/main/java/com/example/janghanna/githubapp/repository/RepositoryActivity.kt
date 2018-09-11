@@ -4,18 +4,12 @@ import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.util.ViewPagerAdapter
 import com.example.janghanna.githubapp.api.model.Repository
-import com.example.janghanna.githubapp.issues.IssuesFragment
-import com.example.janghanna.githubapp.issues.IssuesTabFragment
-import com.example.janghanna.githubapp.issues.OpenCloseFragment
-import com.example.janghanna.githubapp.issues.PullRequestsFragment
 import kotlinx.android.synthetic.main.activity_repository.*
-import java.io.Serializable
 
 class RepositoryActivity : AppCompatActivity() {
 
@@ -72,16 +66,12 @@ class RepositoryActivity : AppCompatActivity() {
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
 
-        val issueFragment = RepositoryIssueFragment()
-        val pullRequestFragment = RepositoryIssueFragment()
         val args = Bundle()
         args.putSerializable("repo",repo)
-        issueFragment.arguments = args
-        pullRequestFragment.arguments = args
 
         adapter.addFragment(CodeFragment(), "Code")
-        adapter.addFragment(issueFragment, "Issues")
-        adapter.addFragment(pullRequestFragment, "Pull Requests")
+        adapter.addFragment(RepositoryIssueFragment().apply { arguments = args }, "Issues")
+        adapter.addFragment(RepositoryIssueFragment().apply { arguments = args }, "Pull Requests")
         adapter.addFragment(ProjectFragment(), "Project")
         viewPager.adapter = adapter
     }

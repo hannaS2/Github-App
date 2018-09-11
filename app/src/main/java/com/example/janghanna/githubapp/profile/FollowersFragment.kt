@@ -3,10 +3,12 @@ package com.example.janghanna.githubapp.profile
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +16,11 @@ import com.example.janghanna.githubapp.GlideApp
 import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.api.model.User
 import com.example.janghanna.githubapp.api.provideGithubApi
+import com.example.janghanna.githubapp.repository.RepositoryActivity
 import com.example.janghanna.githubapp.ui.enqueue
-import kotlinx.android.synthetic.main.fragment_followers.view.*
+import kotlinx.android.synthetic.main.fragment_follow.view.*
 import kotlinx.android.synthetic.main.item_user.view.*
+import org.jetbrains.anko.startActivity
 import kotlin.properties.Delegates
 
 
@@ -24,15 +28,19 @@ class FollowersFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_followers, container, false)
+        val view = inflater.inflate(R.layout.fragment_follow, container, false)
 
-        val adapter = UserAdapter()
+        val user = arguments?.getString("user", null)
+
+        val adapter = UserAdapter(fragmentManager)
         val layoutManager = LinearLayoutManager(this.context)
-        view.followersRecyclerView.adapter = adapter
-        view.followersRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
-        view.followersRecyclerView.layoutManager = layoutManager
+        view.followRecyclerView.adapter = adapter
+        view.followRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
+        view.followRecyclerView.layoutManager = layoutManager
 
-        val eventCall = provideGithubApi(requireContext()).getFollowers()
+        val eventCall = user?.let{ provideGithubApi(requireContext()).getUserFollowers(user) }
+                ?: run { provideGithubApi(requireContext()).getFollowers() }
+//        val eventCall = provideGithubApi(requireContext()).getFollowers()
         eventCall.enqueue({
             it.body()?.let {
                 // Log.i("aaaaa", it.toString())
@@ -53,7 +61,7 @@ class UserViewHolder(parent: ViewGroup)
     : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
 
-class UserAdapter() : RecyclerView.Adapter<UserViewHolder>() {
+class UserAdapter(private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<UserViewHolder>() {
     var items: List<User> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
@@ -71,6 +79,23 @@ class UserAdapter() : RecyclerView.Adapter<UserViewHolder>() {
                     .load(item.image)
                     .centerCrop()
                     .into(followUserImageView)
+
+//            userIdText.setOnClickListener {
+//                val fragment = UserProfileFragment()
+//                val args = Bundle()
+//                args.putString("user", item.id)
+//                fragment.arguments = args
+//
+//                val transaction = fragmentManager?.beginTransaction()
+//                transaction?.replace(R.id.follow_layout, fragment)
+//                transaction?.addToBackStack(null)
+//                transaction?.commit()
+//            }
+
+            userIdText.setOnClickListener {
+                context.startActivity<UserActivity>("user" to item.id)
+            }
+
         }
 
 

@@ -1,11 +1,11 @@
 package com.example.janghanna.githubapp.ui
 
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.util.Log
@@ -14,10 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.janghanna.githubapp.GlideApp
-import com.example.janghanna.githubapp.MainHomeFragment
-import com.example.janghanna.githubapp.OrganizationsFragment
-import com.example.janghanna.githubapp.R
+import com.example.janghanna.githubapp.*
 import com.example.janghanna.githubapp.api.getToken
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.api.updateUserId
@@ -89,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_search -> {
-                toast("검색버튼 클릭")
+//                toast("검색버튼 클릭")
                 return true
             }
         }
@@ -109,11 +106,17 @@ class MainActivity : AppCompatActivity() {
 
         searchView.setOnSearchClickListener {
             toolbarIcon.visibility = View.GONE
+
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, SearchFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
         searchView.setOnCloseListener {
             toolbarIcon.visibility = View.VISIBLE
             false
         }
+
     }
 
     private fun setDrawerHeader() {

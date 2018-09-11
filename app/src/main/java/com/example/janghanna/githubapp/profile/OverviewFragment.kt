@@ -18,10 +18,11 @@ import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.api.getUserId
 import com.example.janghanna.githubapp.api.model.Repository
 import com.example.janghanna.githubapp.api.provideGithubApi
+import com.example.janghanna.githubapp.repository.RepositoryActivity
 import com.example.janghanna.githubapp.ui.enqueue
 import kotlinx.android.synthetic.main.fragment_overview.view.*
-import kotlinx.android.synthetic.main.fragment_repositories.view.*
 import kotlinx.android.synthetic.main.item_pinned_repository.view.*
+import org.jetbrains.anko.startActivity
 import org.jsoup.Jsoup
 import java.io.IOException
 import kotlin.properties.Delegates
@@ -111,6 +112,10 @@ class PinnedReposAdapter() : RecyclerView.Adapter<PinnedReposViewHolder>() {
             languageText.text = item.language
             languageImage.setColorFilter(Color.parseColor(getLanguageColor(context, item.language)))
             starText.text = item.star
+
+            repositoryNameText.setOnClickListener {
+                context.startActivity<RepositoryActivity>("repository" to item)
+            }
         }
 
 
