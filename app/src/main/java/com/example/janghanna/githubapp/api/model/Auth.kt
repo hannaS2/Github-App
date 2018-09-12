@@ -9,10 +9,8 @@ val accessToken: String,
 @field:SerializedName("token_type")
 val tokenType: String)
 
-//data class GithubRepo(@field:SerializedName("full_name") val fullName: String)
 data class RepoSearchResponse(@field:SerializedName("total_count") val totalCount: Int,
                               val items: List<Repository>)
-
 
 data class Event(val actor: Actor, val type: String, val repo: Repo, @field:SerializedName("created_at") val date: String)
 data class Actor(val login: String, @field:SerializedName("avatar_url") val image: String)
@@ -35,9 +33,9 @@ data class Issue(@field:SerializedName("title") val title: String,
 data class Repository(val name: String,
                       val owner: Owner,
                       @field:SerializedName("full_name") val fullName: String?,
-                      @field:SerializedName("stargazers_count") val star: String,
-                      @field:SerializedName("forks_count") val fork: String,
-                      @field:SerializedName("watchers_count") val watcher: String,
+                      @field:SerializedName("stargazers_count") val star: Int,
+                      @field:SerializedName("forks_count") val fork: Int,
+                      @field:SerializedName("watchers_count") val watcher: Int,
                       @field:SerializedName("updated_at") val date: String,
                       @field:SerializedName("created_at") val createdDate: String,
                       @field:SerializedName("pushed_at") val lastPushDate: String,

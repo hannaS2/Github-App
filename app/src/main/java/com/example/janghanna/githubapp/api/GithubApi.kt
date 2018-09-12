@@ -67,9 +67,18 @@ interface GithubApi {
     fun checkFollowingUser(@Path("user") user: String): Call<User>
 
     @PUT("/user/following/{user}")
-    fun setFollowUser(@Path("user") user: String)
+    fun setFollowUser(@Path("user") user: String): Call<User>
 
     @DELETE("/user/following/{user}")
-    fun setUnfollowUser(@Path("user") user: String)
+    fun setUnfollowUser(@Path("user") user: String): Call<User>
+
+    @GET("/user/starred/{user}/{repo}")
+    fun checkStarToRepo(@Path("user") user: String, @Path("repo") repo: String): Call<Repository>
+
+    @PUT("/user/starred/{user}/{repo}")
+    fun setStarToRepo(@Path("user") user: String, @Path("repo") repo: String): Call<Repository>
+
+    @DELETE("/user/starred/{user}/{repo}")
+    fun setUnstarToRepo(@Path("user") user: String, @Path("repo") repo: String): Call<Repository>
 
 }

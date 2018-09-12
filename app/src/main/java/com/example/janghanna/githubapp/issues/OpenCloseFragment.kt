@@ -40,9 +40,10 @@ class OpenCloseFragment : Fragment() {
 
         // home의 issue에서는 run실행(repo가 null인 경우),
         // repository의 issue에서는 전달받은 repo의 issue(repo가 null이 아닌 경우)
-        val openCall = repo?.let { provideGithubApi(this.context!!).getRepoIssues(repo.owner.id, repo.name, state) }
-                ?: run { provideGithubApi(this.context!!).getIssues(filter, state) }
+        val openCall = repo?.let { provideGithubApi(requireContext()).getRepoIssues(repo.owner.id, repo.name, state) }
+                ?: run { provideGithubApi(requireContext()).getIssues(filter, state) }
         openCall.enqueue({
+//            Log.i("aaaa", it.code().toString())
             it.body()?.let {
                 if (it.isEmpty()) {
                     view.noResultText.visibility = View.VISIBLE

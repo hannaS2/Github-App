@@ -80,18 +80,6 @@ class UserAdapter(private val fragmentManager: FragmentManager?) : RecyclerView.
                     .centerCrop()
                     .into(followUserImageView)
 
-//            userIdText.setOnClickListener {
-//                val fragment = UserProfileFragment()
-//                val args = Bundle()
-//                args.putString("user", item.id)
-//                fragment.arguments = args
-//
-//                val transaction = fragmentManager?.beginTransaction()
-//                transaction?.replace(R.id.follow_layout, fragment)
-//                transaction?.addToBackStack(null)
-//                transaction?.commit()
-//            }
-
             userIdText.setOnClickListener {
                 context.startActivity<UserActivity>("user" to item.id)
             }

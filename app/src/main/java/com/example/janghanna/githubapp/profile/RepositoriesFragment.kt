@@ -78,8 +78,8 @@ class RepositoryAdapter(val type: String) : RecyclerView.Adapter<RepositoryViewH
 
         with(holder.itemView) {
             repositoryText.text = if (type == "repo") item.name else item.fullName
-            starText.text = item.star
-            forkText.text = item.fork
+            starText.text = item.star.toString()
+            forkText.text = item.fork.toString()
             updateText.text = calcDate(item.date)
             languageText.text = item.language
 

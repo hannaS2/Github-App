@@ -111,7 +111,7 @@ class PinnedReposAdapter() : RecyclerView.Adapter<PinnedReposViewHolder>() {
             }
             languageText.text = item.language
             languageImage.setColorFilter(Color.parseColor(getLanguageColor(context, item.language)))
-            starText.text = item.star
+            starText.text = item.star.toString()
 
             repositoryNameText.setOnClickListener {
                 context.startActivity<RepositoryActivity>("repository" to item)
