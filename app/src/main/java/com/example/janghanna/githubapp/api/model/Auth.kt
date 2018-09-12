@@ -9,9 +9,9 @@ val accessToken: String,
 @field:SerializedName("token_type")
 val tokenType: String)
 
-data class GithubRepo(@field:SerializedName("full_name") val fullName: String)
+//data class GithubRepo(@field:SerializedName("full_name") val fullName: String)
 data class RepoSearchResponse(@field:SerializedName("total_count") val totalCount: Int,
-                              val items: List<GithubRepo>)
+                              val items: List<Repository>)
 
 
 data class Event(val actor: Actor, val type: String, val repo: Repo, @field:SerializedName("created_at") val date: String)
