@@ -24,7 +24,7 @@ class RepositoryIssueFragment : IssuesTabFragment() {
         setupViewPager(view.issuesTabViewPager, "", repo, null)
         view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
 
-        setOpenCloseTabText(view, null, repo, false)
+        setOpenCloseTabText(view, null, repo, null)
 
         return view
     }

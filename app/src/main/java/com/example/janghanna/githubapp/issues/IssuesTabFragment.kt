@@ -12,20 +12,16 @@ import com.example.janghanna.githubapp.HomeFragment
 import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.api.model.Issue
 import com.example.janghanna.githubapp.api.model.Repository
-import com.example.janghanna.githubapp.util.ViewPagerAdapter
 import com.example.janghanna.githubapp.api.provideGithubApi
 import com.example.janghanna.githubapp.ui.enqueue
+import com.example.janghanna.githubapp.util.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_issues_tab.view.*
-import kotlinx.android.synthetic.main.fragment_open_close.view.*
 
 open class IssuesTabFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_issues_tab, container, false)
-
-//        setupViewPager(view.issuesTabViewPager, "")
-//        view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
 
         return view
     }
@@ -56,30 +52,31 @@ open class IssuesTabFragment : Fragment() {
     }
 
     fun setOpenCloseTabText(view: View, filter: String?, repo: Repository?, pull: Boolean?) {
-        getOpenIssue(view, filter, repo, pull)
-        getClosedIssue(view, filter, repo, pull)
+        getOpenClosedIssue(view, "Open", filter, repo, pull)
+        getOpenClosedIssue(view, "Closed", filter, repo, pull)
     }
 
-    private fun getOpenIssue(view: View, filter: String?, repo: Repository?, pull: Boolean?) {
-//        val openCall = provideGithubApi(this.context!!).getIssues(filter, "open")
-        Log.i("aaaaa", pull.toString())
+    private fun getOpenClosedIssue(view: View, type: String, filter: String?, repo: Repository?, pull: Boolean?) {
+//        Log.i("aaaaa", pull.toString())
+        val typeNum = if(type == "Open") 0 else 1
+
         val openCall = repo?.let { provideGithubApi(requireContext()).getRepoIssues(repo.owner.id, repo.name, "open") }
-                ?: run { provideGithubApi(this.context!!).getIssues(filter, "open") }
+                ?: run { provideGithubApi(this.context!!).getIssues(filter, type.toLowerCase()) }
         openCall.enqueue({
             it.body()?.let {
 
                 pull?.let { pull ->
-                    if(pull) {
+                    if (pull) {
                         val pullRequestList = mutableListOf<Issue>()
                         for (issue in it) {
-                            if(issue.pullRequest != null) {
+                            if (issue.pullRequest != null) {
                                 pullRequestList.add(issue)
                             }
                         }
-                        view.issuesTabTabLayout.getTabAt(0)!!.text = "${pullRequestList.size} Open"
+                        view.issuesTabTabLayout.getTabAt(typeNum)!!.text = "${pullRequestList.size} $type"
                     }
                 } ?: run {
-                    view.issuesTabTabLayout.getTabAt(0)!!.text = "${it.size} Open"
+                    view.issuesTabTabLayout.getTabAt(typeNum)!!.text = "${it.size} $type"
                 }
 
             }
@@ -87,33 +84,5 @@ open class IssuesTabFragment : Fragment() {
             Log.i(HomeFragment.TAG, it.message.toString())
         })
     }
-
-    private fun getClosedIssue(view: View, filter: String?, repo: Repository?, pull: Boolean?) {
-        val closedCall = repo?.let { provideGithubApi(requireContext()).getRepoIssues(repo.owner.id, repo.name, "closed") }
-                ?: run { provideGithubApi(this.context!!).getIssues(filter, "closed") }
-        closedCall.enqueue({
-            it.body()?.let {
-
-                pull?.let { pull ->
-                    if(pull) {
-                        val pullRequestList = mutableListOf<Issue>()
-                        for (issue in it) {
-                            if(issue.pullRequest != null) {
-                                pullRequestList.add(issue)
-                            }
-                        }
-                        view.issuesTabTabLayout.getTabAt(1)!!.text = "${pullRequestList.size} Closed"
-                    }
-                } ?: run {
-                    view.issuesTabTabLayout.getTabAt(1)!!.text = "${it.size} Close"
-                }
-
-//                view.issuesTabTabLayout.getTabAt(1)!!.text = "${it.size} Closed"
-            }
-        }, {
-            Log.i(HomeFragment.TAG, it.message.toString())
-        })
-    }
-
 
 }

@@ -18,12 +18,12 @@ class MentionedFragment : IssuesTabFragment() {
 
         val view = inflater.inflate(R.layout.fragment_issues_tab, container, false)
 
-        val full = arguments?.getBoolean("pullRequest")
+        val pull = arguments?.getBoolean("pullRequest")
 
-        setupViewPager(view.issuesTabViewPager, "mentioned", null, full)
+        setupViewPager(view.issuesTabViewPager, "mentioned", null, pull)
         view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
 
-        setOpenCloseTabText(view, "mentioned", null, full)
+        setOpenCloseTabText(view, "mentioned", null, pull)
 
         return view
     }
