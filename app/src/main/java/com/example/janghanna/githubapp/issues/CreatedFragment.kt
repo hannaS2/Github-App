@@ -19,10 +19,12 @@ class CreatedFragment : IssuesTabFragment() {
 
         val view = inflater.inflate(R.layout.fragment_issues_tab, container, false)
 
-        setupViewPager(view.issuesTabViewPager, "created", null)
+        val full = arguments?.getBoolean("pullRequest")
+
+        setupViewPager(view.issuesTabViewPager, "created", null, full)
         view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
 
-        setOpenCloseTabText(view, "created", null)
+        setOpenCloseTabText(view, "created", null, full)
 
         return view
     }

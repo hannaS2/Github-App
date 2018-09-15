@@ -29,7 +29,7 @@ class InfoFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_info, container, false)
 
         val repo = arguments?.getSerializable("repo") as Repository
-//        Log.i("Aaaaaaa", repo.toString())
+
         with(view) {
             repoUserText.text = repo.owner.id
             repoNameText.text = repo.name
@@ -60,7 +60,6 @@ class InfoFragment : Fragment() {
         var starred = false
         val starCall = provideGithubApi(requireContext()).checkStarToRepo(repo.owner.id, repo.name)
         starCall.enqueue({
-            Log.i("aaaa", it.code().toString())
             if (it.code() == 204) {
                 starred = true
                 view.repoStarImage.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue), PorterDuff.Mode.SRC_IN)

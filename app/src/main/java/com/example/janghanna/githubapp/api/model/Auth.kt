@@ -28,7 +28,9 @@ data class Issue(@field:SerializedName("title") val title: String,
                  val user: User,
                  @field:SerializedName("updated_at") val date: String,
                  val number: String,
-                 val state: String)
+                 val state: String,
+                 val pullRequest: PullRequest?)
+data class PullRequest(val url: String)
 
 data class Repository(val name: String,
                       val owner: Owner,

@@ -21,10 +21,10 @@ class RepositoryIssueFragment : IssuesTabFragment() {
 
         val repo = arguments?.getSerializable("repo") as Repository
 
-        setupViewPager(view.issuesTabViewPager, "", repo)
+        setupViewPager(view.issuesTabViewPager, "", repo, null)
         view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
 
-        setOpenCloseTabText(view, null, repo)
+        setOpenCloseTabText(view, null, repo, false)
 
         return view
     }

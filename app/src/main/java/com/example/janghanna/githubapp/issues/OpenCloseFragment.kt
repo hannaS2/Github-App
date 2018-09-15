@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.example.janghanna.githubapp.R
 import com.example.janghanna.githubapp.api.model.Issue
 import com.example.janghanna.githubapp.api.model.Repository
@@ -28,6 +30,7 @@ class OpenCloseFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_open_close, container, false)
 
         val repo = arguments?.getSerializable("repo") as Repository?
+        val pull = arguments?.getBoolean("pullRequest")
 
         val adapter = IssueAdapter()
         val layoutManager = LinearLayoutManager(this.context)
@@ -38,6 +41,8 @@ class OpenCloseFragment : Fragment() {
         val filter = arguments?.get("filter").toString()
         val state = arguments?.get("state").toString()
 
+
+
         // home의 issue에서는 run실행(repo가 null인 경우),
         // repository의 issue에서는 전달받은 repo의 issue(repo가 null이 아닌 경우)
         val openCall = repo?.let { provideGithubApi(requireContext()).getRepoIssues(repo.owner.id, repo.name, state) }
@@ -45,11 +50,24 @@ class OpenCloseFragment : Fragment() {
         openCall.enqueue({
 //            Log.i("aaaa", it.code().toString())
             it.body()?.let {
-                if (it.isEmpty()) {
-                    view.noResultText.visibility = View.VISIBLE
-                    view.noResultImage.visibility = View.VISIBLE
+
+                pull?.let { pull ->
+                    if(pull) {
+                        val pullRequestList = mutableListOf<Issue>()
+                        for (issue in it) {
+                            if(issue.pullRequest != null) {
+                                Log.i("OpenCloseFragment", "pullRequest!")
+                                pullRequestList.add(issue)
+                            }
+                        }
+                        setEmptyView(pullRequestList, view.noResultImage, view.noResultText)
+                        adapter.items = pullRequestList
+                    } else {
+                        setEmptyView(it, view.noResultImage, view.noResultText)
+                        adapter.items = it
+                    }
                 }
-                adapter.items = it
+
             }
         }, {
             Log.i("OpenCloseFragment", it.message.toString())
@@ -58,7 +76,12 @@ class OpenCloseFragment : Fragment() {
         return view
     }
 
-
+    private fun setEmptyView(list: List<Issue>, image: ImageView, text: TextView) {
+        if(list.isEmpty()) {
+            image.visibility = View.VISIBLE
+            text.visibility = View.VISIBLE
+        }
+    }
 }
 
 

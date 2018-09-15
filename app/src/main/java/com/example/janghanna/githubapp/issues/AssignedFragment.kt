@@ -18,10 +18,12 @@ class AssignedFragment : IssuesTabFragment() {
 
         val view = inflater.inflate(R.layout.fragment_issues_tab, container, false)
 
-        setupViewPager(view.issuesTabViewPager, "assigned", null)
+        val full = arguments?.getBoolean("pullRequest")
+
+        setupViewPager(view.issuesTabViewPager, "assigned", null, full)
         view.issuesTabTabLayout.setupWithViewPager(view.issuesTabViewPager)
 
-        setOpenCloseTabText(view, "assigned", null)
+        setOpenCloseTabText(view, "assigned", null, full)
 
         return view
     }
