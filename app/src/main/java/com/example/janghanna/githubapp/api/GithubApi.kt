@@ -16,14 +16,14 @@ interface GithubApi {
     @GET("user")
     fun getMyUserInfo(@Query("access_token") query: String): Call<User>
 
+    @GET("/users/{user}")
+    fun getUserName(@Path("user") user: String): Call<User>
+
     @GET("user/issues")
     fun getIssues(@Query("filter") filter: String?, @Query("state") state: String): Call<List<Issue>>
 
     @GET("repos/{user}/{repo}/issues")
     fun getRepoIssues(@Path("user") user: String, @Path("repo") repo: String, @Query("state") state: String): Call<List<Issue>>
-
-    @GET("/repos/{user}/{repo}/pulls")
-    fun getPullRequests(@Path("user") user: String, @Path("repo") repo: String): Call<List<Issue>>
 
     @GET("user/repos")
     fun getRepositories(): Call<List<Repository>>

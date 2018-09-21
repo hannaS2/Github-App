@@ -23,7 +23,7 @@ class FollowingFragment : Fragment() {
 
         val user = arguments?.getString("user", null)
 
-        val adapter = UserAdapter(fragmentManager)
+        val adapter = UserAdapter()
         val layoutManager = LinearLayoutManager(requireContext())
         view.followRecyclerView.adapter = adapter
         view.followRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))

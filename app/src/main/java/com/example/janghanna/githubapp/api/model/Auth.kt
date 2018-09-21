@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Auth(
-@field:SerializedName("access_token")
-val accessToken: String,
-@field:SerializedName("token_type")
-val tokenType: String)
+        @field:SerializedName("access_token")
+        val accessToken: String,
+        @field:SerializedName("token_type")
+        val tokenType: String)
 
 data class RepoSearchResponse(@field:SerializedName("total_count") val totalCount: Int,
                               val items: List<Repository>)
@@ -30,6 +30,7 @@ data class Issue(@field:SerializedName("title") val title: String,
                  val number: String,
                  val state: String,
                  val pullRequest: PullRequest?)
+
 data class PullRequest(val url: String)
 
 data class Repository(val name: String,
@@ -44,24 +45,28 @@ data class Repository(val name: String,
                       val language: String,
                       val description: String?,
                       @field:SerializedName("html_url") val url: String) : Serializable
-data class Owner(@field:SerializedName("login") val id: String): Serializable
+
+data class Owner(@field:SerializedName("login") val id: String) : Serializable
 
 data class ReadMe(val name: String,
                   @field:SerializedName("download_url") val url: String)
 
 data class File(val name: String,
-                  val path: String,
-                  val type: String,
-                  @field:SerializedName("download_url") val url: String)
+                val path: String,
+                val type: String,
+                @field:SerializedName("download_url") val url: String,
+                val size: Double)
 
 data class Commit(val author: User,
                   @field:SerializedName("commit") val content: CommitContent)
+
 data class CommitContent(val message: String, val author: Committer)
 data class Committer(val date: String)
 
 data class Contributor(@field:SerializedName("author") val user: User,
                        @field:SerializedName("total") val count: Int,
                        @field:SerializedName("weeks") val stats: List<WeekStats>)
+
 data class WeekStats(@field:SerializedName("w") val startWeek: String,
                      @field:SerializedName("a") val addition: Int,
                      @field:SerializedName("d") val deletion: Int,

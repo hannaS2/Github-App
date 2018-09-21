@@ -22,6 +22,7 @@ import com.example.janghanna.githubapp.ui.enqueue
 import kotlinx.android.synthetic.main.fragment_files.view.*
 import kotlinx.android.synthetic.main.item_file.view.*
 import org.jetbrains.anko.startActivity
+import java.lang.Double.parseDouble
 import kotlin.properties.Delegates
 
 
@@ -88,6 +89,7 @@ class FileAdapter(private val fragmentManager: FragmentManager?) : RecyclerView.
         with(holder.itemView) {
             fileNameText.text = item.name
             fileImage.setImageDrawable(generateFileIcon(holder.itemView.context, item.type))
+            if (item.type == "file") fileSizeText.text = ("${"%.2f".format(item.size/1000)} KB").toString()
 
             fileNameText.setOnClickListener {
                 if (item.type == "file") {

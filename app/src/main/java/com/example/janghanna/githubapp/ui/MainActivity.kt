@@ -1,6 +1,7 @@
 package com.example.janghanna.githubapp.ui
 
 import android.graphics.Color
+import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -100,9 +101,11 @@ class MainActivity : AppCompatActivity() {
     private fun customSearchIcon(menu: Menu?) {
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView: SearchView = searchItem?.actionView as SearchView
-        val icon: ImageView = searchView.findViewById(android.support.v7.appcompat.R.id.search_button)
+        val searchIcon: ImageView = searchView.findViewById(android.support.v7.appcompat.R.id.search_button)
+        val closeIcon:ImageView = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn)
         val text: TextView = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)
-        icon.setColorFilter(Color.WHITE)
+        searchIcon.setColorFilter(Color.WHITE)
+        closeIcon.setColorFilter(Color.WHITE)
         text.setTextColor(Color.WHITE)
         searchView.queryHint = "Search..."
         text.setHintTextColor(Color.WHITE)

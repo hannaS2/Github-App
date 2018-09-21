@@ -32,7 +32,7 @@ class FollowersFragment : Fragment() {
 
         val user = arguments?.getString("user", null)
 
-        val adapter = UserAdapter(fragmentManager)
+        val adapter = UserAdapter()
         val layoutManager = LinearLayoutManager(this.context)
         view.followRecyclerView.adapter = adapter
         view.followRecyclerView.addItemDecoration(DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL))
@@ -43,7 +43,6 @@ class FollowersFragment : Fragment() {
 //        val eventCall = provideGithubApi(requireContext()).getFollowers()
         eventCall.enqueue({
             it.body()?.let {
-                // Log.i("aaaaa", it.toString())
                 adapter.items = it
             }
         }, {
@@ -61,7 +60,7 @@ class UserViewHolder(parent: ViewGroup)
     : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
 
-class UserAdapter(private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<UserViewHolder>() {
+class UserAdapter() : RecyclerView.Adapter<UserViewHolder>() {
     var items: List<User> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
@@ -79,6 +78,15 @@ class UserAdapter(private val fragmentManager: FragmentManager?) : RecyclerView.
                     .load(item.image)
                     .centerCrop()
                     .into(followUserImageView)
+
+            val userCall = provideGithubApi(context).getUserName(item.id)
+            userCall.enqueue({
+                it.body()?.let {
+                    usernameText.text = it.name
+                }
+            }, {
+                Log.i("FollowersFragment", it.message.toString())
+            })
 
             userIdText.setOnClickListener {
                 context.startActivity<UserActivity>("user" to item.id)
